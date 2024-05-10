@@ -465,7 +465,7 @@ LIMIT 5;
 > |--------|---------------|
 > |Amazon | 109.03|
 > |Atliq Exclusive| 79.92|
-> > |Atliq e Store| 70.31|
+> |Atliq e Store| 70.31|
 > |Sage| 27.07|
 > |Flipkart| 25.25|
 
