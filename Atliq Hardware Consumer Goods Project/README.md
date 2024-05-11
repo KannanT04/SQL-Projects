@@ -450,6 +450,7 @@ LIMIT 5
 
 Also a stored procedure was created which will query *top n markets* in given *fiscal year*
 > ![top_n_markets_stored_procedure](top_n_markets.png)
+> ![top_markets](top_markets.png)
 
 ### Task 4: Top 5 customers by net_sales for fy 2021
 ```sql
