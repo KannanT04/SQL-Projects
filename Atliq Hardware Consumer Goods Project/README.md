@@ -19,12 +19,19 @@
 |3.6|[Top 10 customer by net_sales % for fy 2021](#task-6-top-10-customers-by-for-net-sales-%)||
 |3.7|[Region-wise breakdown of net sales by customers](#task-7-region-wise-breakdown-of-net-sales-by-customers)||
 |3.8|[Retrieve the top 2 markets in every region by their gross sales amount in FY 2021](#task-8-retrieve-the-top-2-markets-in-every-region-by-their-gross-sales-amount-in-fy-2021)||
-|3.9|[Retrieve the top 3 products in every division by their gross sales amount in FY=2021](#task-9-Retrieve-the-top-3-products-in-every-division-by-their-gross-sales-amount-in-FY=2021)||
+|3.9|[Retrieve the top 3 products in every division by their gross sales amount in FY=2021](#task-9-retrieve-the-top-3-products-in-every-division-by-their-gross-sales-amount-in-FY=2021)||
 |**4**|[**Ad-hoc Queries, Data Visualization & Business Insights**](#4-ad-hoc-queries-data-visualization--business-insights-using-python-pandas)|Python / Panads|
 |4.1|[Get the total sold quantity for each fiscal year & Show it through visualisation](#task-1-get-the-total-sold-quantity-for-each-fiscal-year--show-it-through-visualisation)||
 |4.2|[Query the quarters of 2021 by sold quantity and plot line graph](#task-2-query-the-quarters-of-2021-by-sold-quantity-and-plot-line-graph)||
 |4.3|[Generate a report with Top 5 products in each division by sold quantity](#task-3-generate-a-report-with-top-5-products-in-each-division-by-sold-quantity)||
 |4.4|[Which channel brings more gross sales in the year 2021 and plot the pie chart](#task-4-which-channel-brings-more-gross-sales-in-the-year-2021-and-plot-the-pie-chart)||
+|4.5|[Provide the list of markets in which customer "Atliq Exclusive" operates its business in the APAC region](#task-5-provide-the-list-of-markets-in-which-customer-"Atliq-Exclusive"-operates-its-business-in-the-APAC-region.)||
+|4.6|[Percentage of unique product increase in 2021 vs. 2020.](#task-6-percentage-of-unique-product-increase-in-2021-vs.-2020.)||
+|4.7|[Provide a report with all the unique product counts for each segment and sort them in descending order of product counts.](#task-7-provide-a-report-with-all-the-unique-product-counts-for-each-segment-and-sort-them-in-descending-order-of-product-counts.)||
+|4.8|[Segment had the most increase in unique products in 2021 vs 2020](#task-8-Segment-had-the-most-increase-in-unique-products-in-2021-vs-2020)||
+[4.9|[Get the products that have the highest and lowest manufacturing costs](#task-9-get-the-products-that-have-the-highest-and-lowest-manufacturing-costs)||
+|4.10|[Generate a report which contains the top 5 customers who received an average high pre_invoice_discount_pct for the fiscal year 2021 and in the Indian market.](#task-10-generate-a-report-which-contains-the-top-5-customers-who-received-an-average-high-pre_invoice_discount_pct-for-the-fiscal-year-2021-and-in-the-Indian-market.)||
+|4.11|[In which quarter of 2020, got the maximum total_sold_quantity?](#task-11-In-which-quarter-of-2020-got-the-maximum-total_sold_quantity?)||
 ```
 
 
@@ -953,7 +960,7 @@ average_discount_pct
 * Total Gross Sales by Flipkart in 2020 was Rs.13M, so it tops the list by recieving highest average discount percentage of 30.83.
 * In India, Amazon made the most sales in 2020 for Rs.16M, but has only recieved the 29% average discount.
 
-## Task 11: In which quarter of 2020, got the maximum total_sold_quantity?
+## Task 11: In which quarter of 2020 got the maximum total_sold_quantity?
 ```python
 query="""
       SELECT 
