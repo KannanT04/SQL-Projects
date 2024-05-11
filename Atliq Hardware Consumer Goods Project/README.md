@@ -792,3 +792,200 @@ x.plot(kind="pie", autopct="%.2f%%", title="Channel-wise contribution in Gross s
 - In 2021, Retailers contribute nearly 73% of total gross_sales amount.
 - We can give good pre-invoice deductions(discounts) on products for top performing retailers and that have a scope to maintain good relationships with them and thus have a scope to increase more gross sales.
 - We need to think why **Direct(Atliq Stores)** are failing to perform same as retailers and do through study of sucess measures of retailers and try to implement for our stores
+
+### Task 5: Provide the list of markets in which customer "Atliq Exclusive" operates its business in the APAC region.
+```python
+query="""
+         SELECT DISTINCT market
+         FROM dim_customer
+         WHERE customer='Atliq Exclusive' AND region='APAC';
+"""
+distinct_market=pd.read_sql_query(text(query),conn)
+distinct_market
+```
+|  |	market       |
+|--|----------------|
+|0 |	India  |
+|1 |	Indonesia|
+|2 |	Japan|
+|3 |	Philiphines|
+|4 |	South Korea|
+|5 |	Australia|
+|6 |	Newzealand|
+|7 |	Bangladesh|
+
+### Task 6: Percentage of unique product increase in 2021 vs. 2020.
+```python
+query="""
+       SELECT unique_products_2020,unique_products_2021,round((unique_products_2021-unique_products_2020)*100/(unique_products_2020),2) AS chng_pct
+       FROM (
+       (SELECT COUNT(DISTINCT product_code) AS unique_products_2020
+       FROM fact_sales_monthly
+       WHERE fiscal_year=2020)x,
+       (SELECT COUNT(DISTINCT product_code) AS unique_products_2021
+       FROM fact_sales_monthly
+       WHERE fiscal_year=2021)y
+       );
+"""
+product_ch_pct=pd.read_sql_query(text(query),conn)
+product_ch_pct
+```
+>|unique_products_2020|	unique_products_2021|	chng_pct|
+>|-------------------|------------------------|-----------|
+>|0	|245	|334	|36.33|
+
+### Task 7: Provide a report with all the unique product counts for each segment and sort them in descending order of product counts.
+```python
+query="""
+      SELECT segment, COUNT(product_code) AS product_count
+      FROM dim_product
+      GROUP BY segment
+      ORDER BY product_count DESC;
+"""
+seg_wise_product_count=pd.read_sql_query(text(query),conn)
+seg_wise_product_count
+```
+>|   |	segment|product_count|
+>|---|----------|--------------|
+>|0|	Notebook|	129|
+>|1|	Accessories|	116|
+>|2|	Peripherals|	84|
+>|3|	Desktop|	32|
+>|4|	Storage|	27|
+>|5|	Networking|	9|
+
+```python
+seg_wise_product_count.sort_values(by='product_count',ascending=True).plot(kind='barh',x='segment',y='product_count',title='Segment Wise Product Count')
+```
+>![segment wise product count](segment_wise_product_count.png)
+
+**🔎 Business Insights:**
+* segment Notebooks is doing extremely well for Atliq Hardware with a maximum of (32.5%) share.
+* This says that introducing new notebooks will definitely do well.
+* Networking and Storage segment needs some attention to increase its share of business.
+
+## Task 8: Segment had the most increase in unique products in 2021 vs 2020
+```python
+query="""
+       WITH x AS(SELECT segment, COUNT(DISTINCT product_code) AS product_count_2020
+                  FROM dim_product p
+                  JOIN fact_sales_monthly s
+                  USING (product_code)
+                  WHERE fiscal_year=2020
+                  GROUP BY segment
+                  ORDER BY product_count_2020 DESC),
+            y AS(SELECT segment, COUNT(DISTINCT product_code) AS product_count_2021
+                  FROM dim_product p
+                  JOIN fact_sales_monthly s
+                  USING (product_code)
+                  WHERE fiscal_year=2021
+                  GROUP BY segment
+                  ORDER BY product_count_2021 DESC)
+            SELECT x.segment,x.product_count_2020,y.product_count_2021,(y.product_count_2021-x.product_count_2020) AS difference
+            FROM x
+            JOIN y
+            USING(segment)
+            ORDER BY difference DESC;
+"""
+differnce_count=pd.read_sql_query(text(query),conn)
+differnce_count
+```
+>|       |segment	|product_count_2020|	product_count_2021|	difference|
+>|------|---------------|------------------|----------------------|---------------|
+>|0|	Accessories|	69|	103|	34|
+>|1|	Notebook|	92|	108|	16|
+>|2|	Peripherals|	59|	75|	16|
+>|3|	Desktop|	7|	22|	15|
+>|4|	Storage|	12|	17|	5|
+>|5|	Networking|	6|	9|	3|
+
+**🔎 Business Insights:**
+* Accessories has been 34 new products in 2021 which is a high compared to any other segments.
+* Accessories has surpassed Notebooks in 2021 in terms of unique product count.
+* In 2021, Desktop witnessed 142% y-o-y increase in product count compared to 2020.
+* Increasing the Desktop segment inventory will be helpful for upcoming demand.
+
+## Task 9: Get the products that have the highest and lowest manufacturing costs
+```python
+query ="""
+      WITH x as(SELECT * FROM dim_product),
+     y AS (SELECT * FROM fact_manufacturing_cost
+   WHERE manufacturing_cost IN (
+   (SELECT MAX(manufacturing_cost) FROM fact_manufacturing_cost),
+   (SELECT MIN(manufacturing_cost) FROM fact_manufacturing_cost)))
+   SELECT x.product_code,x.product,ROUND(y.manufacturing_cost,2) AS manufacturing_cost
+   FROM x
+   JOIN y
+   ON x.product_code=y.product_code
+   ORDER BY manufacturing_cost DESC;
+"""
+
+m_cost=pd.read_sql_query(text(query),conn)
+m_cost
+```
+>|	|product_code	|product	|manufacturing_cost|
+>|-------|---------------|---------------|------------------|
+>|0	|A6121110208	|AQ HOME Allin1 Gen 2	|263.42|
+>|1	|A2118150101	|AQ Master wired x1 Ms	|0.87|
+
+## Task 10: Generate a report which contains the top 5 customers who received an average high pre_invoice_discount_pct for the fiscal year 2021 and in the Indian market.
+```python
+query="""
+     SELECT customer_code, customer, AVG(pre_invoice_discount_pct)*100 AS average_discount_percentage
+     FROM dim_customer c
+     JOIN fact_pre_invoice_deductions pre
+     USING (customer_code)
+     WHERE fiscal_year=2021 AND market='India'
+     GROUP BY customer_code,customer
+     ORDER BY average_discount_percentage DESC
+     LIMIT 5;
+"""
+average_discount_pct=pd.read_sql_query(text(query),conn)
+average_discount_pct
+```
+>|	|customer_code	|customer	|average_discount_percentage|
+>|-------|---------------|---------------|----------------------------|
+>|0	|90002009	|Flipkart	|30.83|
+>|1	|90002006	|Viveks	|30.38|
+>|2	|90002003	|Ezone	|30.28|
+>|3	|90002002	|Croma	|30.25|
+>|4	|90002016	|Amazon	|29.33|
+
+**🔎 Business Insights:**
+* Total Gross Sales by Flipkart in 2020 was Rs.13M, so it tops the list by recieving highest average discount percentage of 30.83.
+* In India, Amazon made the most sales in 2020 for Rs.16M, but has only recieved the 29% average discount.
+
+## Task 11: In which quarter of 2020, got the maximum total_sold_quantity?
+```python
+query="""
+      SELECT 
+CASE 
+   WHEN MONTH(date) IN (9,10,11) THEN 'Q1'
+   WHEN MONTH(date) IN (12,1,2) THEN 'Q2'
+   WHEN MONTH(date) IN (3,4,5) THEN 'Q3'
+   ELSE 'Q4'
+   END AS qtr,
+   ROUND(SUM(sold_quantity)/1000000,2) AS total_sold_quantity_mln
+   FROM fact_sales_monthly
+   WHERE fiscal_year=2020
+   GROUP BY qtr
+   ORDER BY total_sold_quantity_mln DESC;
+"""
+
+quarters_2020=pd.read_sql_query(text(query),conn)
+quarters_2020
+```
+>|	|qtr	|total_sold_quantity_mln|
+>|-------|-------|-----------------------|
+>|0	|Q1	|7.01|
+>|1	|Q2	|6.65|
+>|2	|Q4	|5.04|
+>|3	|Q3	|2.08|
+
+```python
+quarters_2020.plot(kind='bar',x='qtr',y='total_sold_quantity_mln',title='2020 Quater wise total sales')
+```
+>![quaters_2020](quaters_2020.png)
+**🔎 Business Insights:**
+* InsightsIn first quarter of FY2020, AltiQHardwares recorded the highest saleof Rs.7.01M in FY2020In first quarter of FY2020, AltiQ Hardwares recorded the highest sale Rs.7.01M in FY2020In first quarter of FY2020, AltiQ Hardwares recorded the highest sale Rs.7.01M in FY2020
+* It has been seen 21.9% decline insales from Q2 to Q3.
