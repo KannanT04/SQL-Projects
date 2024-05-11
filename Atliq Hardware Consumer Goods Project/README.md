@@ -372,7 +372,7 @@ END
 ## 3. Top Customers, Products, Markets
 ### Task 1: Create a generated column `fiscal_year`
 Add a generated column `fiscal_year` to `fact_sales_monthly` table for query optimization and performance improvement.
-> ![fy.png](fy.png)
+> ![fiscal_year.png](fiscal_year.png)
 
 ### Task 2: Create `database view`s
 Create following `database view`s.
