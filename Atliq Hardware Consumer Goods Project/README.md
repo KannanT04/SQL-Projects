@@ -560,7 +560,10 @@ ORDER BY region,net_sales_mln DESC;
 
 > This report was exported to excel to create charts
 
-> ![apac_customer_share](region_customer_share.png)
+> ![apac_net_sales_pct](apac_net_sales_pct.png)
+> ![eu_net_sales_pct](eu_net_sales_pct.png)
+> ![latam_net_sales_pct](latam_net_sales_pct.png)
+> ![na_net_sales_pct](na_net_sales_pct.png)
 
 ### Task 8: Retrieve the top 2 markets in every region by their gross sales amount in FY 2021
 ```sql
