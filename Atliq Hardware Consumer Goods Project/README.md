@@ -525,11 +525,6 @@ LIMIT 10;
 > |Electricalsocity|	16.25|	1.972327|
 > |Synthetic|	16.1|	1.954121|
 
-> This report was exported to excel to create charts
-
-> ![customers_bar_chart](customers_bar_chart.png)
-> ![customers_pie_chart](customers_pie.png)
-
 ### Task 7: Region-wise breakdown of net sales by customers
 Create region wise (APAC, EU, LTAM etc) % net sales breakdown by customers in a respective region so regional analysis can be performed.
 
