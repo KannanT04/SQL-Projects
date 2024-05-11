@@ -547,8 +547,7 @@ GROUP BY c.region,c.customer)
 SELECT *,
 net_sales_mln*100/SUM(net_sales_mln) OVER(PARTITION BY region) AS pct
 FROM cte
-ORDER BY region,net_sales_mln DESC
-LIMIT 10;
+ORDER BY region,net_sales_mln DESC;
 ```
 
 > |customer| region| net_sales_mln| pct_share_region|
