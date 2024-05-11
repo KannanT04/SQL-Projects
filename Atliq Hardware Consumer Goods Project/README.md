@@ -986,6 +986,7 @@ quarters_2020
 quarters_2020.plot(kind='bar',x='qtr',y='total_sold_quantity_mln',title='2020 Quater wise total sales')
 ```
 >![quaters_2020](quaters_2020.png)
+
 **🔎 Business Insights:**
 * InsightsIn first quarter of FY2020, AltiQHardwares recorded the highest saleof Rs.7.01M in FY2020In first quarter of FY2020, AltiQ Hardwares recorded the highest sale Rs.7.01M in FY2020In first quarter of FY2020, AltiQ Hardwares recorded the highest sale Rs.7.01M in FY2020
 * It has been seen 21.9% decline insales from Q2 to Q3.
